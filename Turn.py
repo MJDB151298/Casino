@@ -2,6 +2,14 @@ import Distribute
 from Entities import Table
 
 
+# SYMBOL SHORTCUTS:
+# alt + 3: ♥
+# alt + 4: ♦
+# alt + 5: ♣
+# alt + 6: ♠
+
+# funcion start: Inicia el juego llamando a las funciones que reparten las cartas, toman lo que el jugador quiere hacer
+# cada turno y sigue corriendo hasta que se determina que el juego ha terminado
 def start():
     players, table, cards = Distribute.set_players_and_table()
     last_player_taking = None
@@ -35,6 +43,14 @@ def start():
     print("Gracias por jugar!")
 
 
+# funcion check_game_over: Determina si los jugadores no tienen mas cartas y no hay mas cartas para repartir.
+# PARAMETROS:
+# players: Los jugadores.
+# table: La mesa del juego.
+# cards: las cartas restantes.
+# last_player_taking: En casino, cuando el juego se acaba, el ultimo jugador que tomo cartas se queda con lo que hay en la mesa.
+# RETORNO:
+# True si el juego ha finalizado, False si no.
 def check_game_over(players, table, cards, last_player_taking):
     if check_redistribute(players) and len(cards) == 0:
         for player in players:
@@ -46,6 +62,9 @@ def check_game_over(players, table, cards, last_player_taking):
     return False
 
 
+# funcion calculate_winner: Calcula el puntuaje de todos los jugadores
+# PARAMETROS:
+# players: Los jugadores.
 def calculate_winner(players):
     total_cards = []
     total_spades = []
@@ -58,6 +77,11 @@ def calculate_winner(players):
     players[total_spades.index(max(total_spades))].score += 1
 
 
+# funcion check_redistribute: Verifica si hay que entregar 4 cartas mas a los jugadores:
+# PARAMETROS:
+# players: Los jugadores
+# RETORNO:
+# True si hay que redistribuir, False si no.
 def check_redistribute(players):
     for player in players:
         if len(player.hand_cards) != 0:
@@ -65,6 +89,10 @@ def check_redistribute(players):
     return True
 
 
+# funcion show_table: Muestra las cartas de un jugador y la mesa.
+# PARAMETROS:
+# player: Jugador
+# table: Mesa del juego
 def show_table(player, table):
     print("Turn Player " + str(player.identifier))
     player.show_cards()
@@ -74,6 +102,13 @@ def show_table(player, table):
     print("\n")
 
 
+# funcion discard: El jugador descarta una de las cartas que tiene en mano y la pone sobre la mesa
+# PARAMETROS:
+# player: jugador que descartara la carta
+# table: mesa del juego.
+# RETORNO
+# True si el jugador se deshace de la carta.
+# False si el jugador decide no descartar y hacer otro tipo de movida.
 def discard(player, table):
     player.show_cards()
     card = None
@@ -91,6 +126,13 @@ def discard(player, table):
             return True
 
 
+# funcion take: El jugador toma cartas de la mesa utilizando una de sus cartas que tengan el mismo valor
+# PARAMETROS:
+# player; El jugador que va a tomar.
+# table: mesa del juego.
+# RETORNO
+# True si el jugador toma las cartas.
+# False si el jugador decide no tomar y hacer otro tipo de movida.
 def take(player, table):
     card = None
     successful_take = False
@@ -117,6 +159,13 @@ def take(player, table):
             print("No puede tomar de la mesa con esa carta!")
 
 
+# funcion build: Construye cartas en la mesa con una carta en la mano del jugador.
+# PARAMETROS:
+# player: El jugador que realizara la construccion.
+# table: mesa del juego.
+# RETORNO:
+# True si el jugador completa la construccion.
+# False si el jugador decide no completar la construccion y hacer otro tipo de movida.
 def build(player, table):
     card = None
     successful_build = False
@@ -146,6 +195,12 @@ def build(player, table):
             print("No es posible construir en esa posicion!")
 
 
+# funcion extra_build: Construye cartas que ya se encuentra en la mesa
+# PARAMETROS:
+# position: cartas que se usaran para construir con otra carta en la mesa
+# table: mesa del juego
+# RETORNO:
+# No hay retorno.
 def extra_build(position, table):
     successful_extra_build = False
     while successful_extra_build is False:

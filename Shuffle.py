@@ -1,7 +1,9 @@
 import random
 from Entities import Card
 
-
+# funcion shuffle: se encarga de construir las 52 cartas y barajarlas.
+# RETORNO
+# retorna las cartas barajadas.
 def shuffle():
     cards = []
     symbols = ['♥', '♦', '♣', '♠']
